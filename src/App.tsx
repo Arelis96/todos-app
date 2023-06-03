@@ -1,14 +1,17 @@
-import QueryProvider from './ui/providers/QueryProvider'
+import StateProvider from './ui/state/StateProvider'
 import UIProvider from './ui/providers/UIProvider'
-import Login from './ui/views/Login/Login'
+import QueryProvider from './ui/providers/QueryProvider'
+import AppRouterProvider from './ui/navigation/AppRouterProvider'
 
 const App = () => {
   return (
-    <UIProvider>
-      <QueryProvider>
-        <Login />
-      </QueryProvider>
-    </UIProvider>
+    <StateProvider>
+      <UIProvider>
+        <QueryProvider>
+          <AppRouterProvider />
+        </QueryProvider>
+      </UIProvider>
+    </StateProvider>
   )
 }
 

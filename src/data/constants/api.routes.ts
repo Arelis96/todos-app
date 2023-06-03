@@ -1,6 +1,6 @@
 export enum ApiRoutes {
-  LOGIN = '/login',
-  REGISTER = '/register',
+  LOGIN = '/auth/login',
+  REGISTER = 'auth/register',
   CATEGORIES = '/categories',
   TODOS = '/todos',
 }

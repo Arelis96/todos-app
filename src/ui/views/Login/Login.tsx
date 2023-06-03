@@ -1,11 +1,14 @@
-import { Card, Form } from 'antd'
+import { useDispatch } from 'react-redux'
+import { Card, Form, message } from 'antd'
 import { useMutation } from '@tanstack/react-query'
 
+import { Session } from '../../../domain/models/session.model'
 import { LoginFormValues } from './components/LoginForm/LoginForm.types'
 
 import LoginForm from './components/LoginForm/LoginForm'
 
 import api from '../../../data/api'
+import { login } from '../../state/session/session.slice'
 
 import './Login.css'
 
@@ -14,8 +17,16 @@ const { useForm } = Form
 const Login = () => {
   const [form] = useForm<LoginFormValues>()
 
+  const dispatch = useDispatch()
+
+  const onSuccess = (data: Session) => {
+    dispatch(login(data))
+    message.success('Bienvenido')
+  }
+
   const mutation = useMutation({
     mutationFn: api.auth.login,
+    onSuccess,
   })
 
   const onSubmitForm = (values: LoginFormValues) => {
@@ -30,6 +41,7 @@ const Login = () => {
         <LoginForm
           form={form}
           onSubmit={onSubmitForm}
+          loading={mutation.isLoading}
           className='login__form'
         />
       </Card>

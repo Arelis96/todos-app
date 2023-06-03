@@ -4,7 +4,7 @@ import { LoginFormProps } from './LoginForm.types'
 
 const { Item } = Form
 
-const LoginForm = ({ form, className, onSubmit }: LoginFormProps) => {
+const LoginForm = ({ form, className, onSubmit, loading }: LoginFormProps) => {
   return (
     <Form
       form={form}
@@ -18,7 +18,13 @@ const LoginForm = ({ form, className, onSubmit }: LoginFormProps) => {
       <Item name='password' label='Contraseña' rules={[{ required: true }]}>
         <Input placeholder='Contraseña' />
       </Item>
-      <Button type='primary' htmlType='submit' block style={{ marginTop: 4 }}>
+      <Button
+        type='primary'
+        htmlType='submit'
+        loading={loading}
+        block
+        style={{ marginTop: 4 }}
+      >
         Ingresar
       </Button>
     </Form>
