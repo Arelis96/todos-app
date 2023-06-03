@@ -16,18 +16,11 @@ const Header = () => {
   const session = useSelector(selectSession) as Session
 
   return (
-    <div
-      style={{
-        padding: '12px 24px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <span style={{ fontSize: 18, fontWeight: 500 }}>TodoApp</span>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <span style={{ fontSize: 14 }}>{session.user.name}</span>
-        <Avatar style={{ background: 'var(--primary)' }}>
+    <div className='py-3 px-6 flex justify-between items-center'>
+      <span className='text-lg font-medium'>TodoApp</span>
+      <div className='flex items-center gap-2'>
+        <span className='text-sm'>{session.user.name}</span>
+        <Avatar className='bg-primary'>
           {session.user.name[0].toUpperCase()}
         </Avatar>
       </div>
@@ -45,48 +38,57 @@ const Todos = () => {
   return (
     <div className='view'>
       <Header />
-      <div
-        className='container'
-        style={{
-          paddingTop: 24,
-          paddingBottom: 24,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <span style={{ fontSize: 24 }}>Mis tareas</span>
+      <div className='container py-6'>
+        <div className='flex justify-between items-center'>
+          <span className='text-2xl font-medium'>Mis tareas</span>
           <Button icon={<ReloadOutlined />} />
         </div>
-        <Row gutter={16} style={{ marginTop: 24, rowGap: 16 }}>
+        <div className='mt-6'>
+          {Array.from({ length: 12 }).map((_, i) => {
+            return (
+              <Tag
+                color='white'
+                className={
+                  i % 2 === 0
+                    ? '!bg-primary !h-6'
+                    : '!bg-gray-100 !text-gray-600 !h-6'
+                }
+              >
+                Category
+              </Tag>
+            )
+          })}
+          <Tooltip title='Editar categorias'>
+            <Button icon={<EditOutlined />} size='small' />
+          </Tooltip>
+        </div>
+        <Row gutter={16} className='mt-6 gap-y-3'>
           {Array.from({ length: 8 }, (_, i) => {
             return (
               <Col key={i} span={24} md={12}>
                 <Card
                   actions={[
                     <Tooltip title='Completar'>
-                      <CheckOutlined />
+                      <CheckOutlined className='!text-green-500' />
                     </Tooltip>,
                     <Tooltip title='Editar'>
-                      <EditOutlined />
+                      <EditOutlined className='!text-blue-500' />
                     </Tooltip>,
                     <Tooltip title='Delete'>
-                      <DeleteOutlined />
+                      <DeleteOutlined className='!text-red-500' />
                     </Tooltip>,
                   ]}
                 >
-                  <span style={{ fontSize: 14, fontWeight: 500 }}>Task</span>
-                  <p>
+                  <span className='text-base font-medium'>Task</span>
+                  <p className='text-sm text-gray-500'>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Officia unde magni alias.
                   </p>
                   <div>
                     {['Category 1', 'Category 2', 'Category 3'].map((value) => (
-                      <Tag key={value}>{value}</Tag>
+                      <Tag key={value} color='var(--primary)'>
+                        {value}
+                      </Tag>
                     ))}
                   </div>
                 </Card>

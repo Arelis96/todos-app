@@ -13,7 +13,7 @@ const UIProvider = ({ children }: UIProviderProps) => {
       locale={antdEsLocale}
       theme={{
         token: {
-          colorPrimary: '#E11299',
+          colorPrimary: '#40128B',
         },
       }}
     >
