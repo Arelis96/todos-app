@@ -11,6 +11,17 @@ import http from '../http/http'
 import { ApiRoutes } from '../constants/api.routes'
 import { getRequestConfig } from '../http/http.util'
 
+export type CreateTodoPayload = CreatePayload<
+  Omit<Todo, 'categories' | 'userId' | 'isCompleted'> & {
+    categories?: string[]
+    isCompleted?: boolean
+  }
+>
+
+export type EditTodoPayload = EditPayload<
+  Omit<Todo, 'categories'> & { categories?: string[] }
+>
+
 export class TodoRepository {
   url = `${ApiRoutes.TODOS}/me`
 
@@ -22,7 +33,7 @@ export class TodoRepository {
     return response.data.data
   }
 
-  create = async ({ token, body }: CreatePayload<Todo>) => {
+  create = async ({ token, body }: CreateTodoPayload) => {
     const response = await http.post<RequestResponse<Todo>>(
       this.url,
       body,
@@ -31,7 +42,7 @@ export class TodoRepository {
     return response.data.data
   }
 
-  edit = async ({ token, body, id }: EditPayload<Todo>) => {
+  edit = async ({ token, body, id }: EditTodoPayload) => {
     const response = await http.put<RequestResponse<Todo>>(
       `${this.url}/${id}`,
       body,
