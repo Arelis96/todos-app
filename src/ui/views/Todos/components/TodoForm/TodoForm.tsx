@@ -47,7 +47,7 @@ const TodoForm = ({
           loading={categoriesQuery.isLoading || categoriesQuery.isFetching}
         />
       </Item>
-      <Button type='primary' htmlType='submit' block className='mt-2'>
+      <Button type='primary' htmlType='submit' block>
         {submitButtonText}
       </Button>
     </Form>

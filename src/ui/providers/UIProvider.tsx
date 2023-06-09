@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ConfigProvider } from 'antd'
+import { App, ConfigProvider } from 'antd'
 
 import antdEsLocale from 'antd/lib/locale/es_ES'
 
@@ -17,7 +17,7 @@ const UIProvider = ({ children }: UIProviderProps) => {
         },
       }}
     >
-      {children}
+      <App>{children}</App>
     </ConfigProvider>
   )
 }

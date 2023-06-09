@@ -1,0 +1,21 @@
+.register {
+  justify-content: center;
+  align-items: center;
+}
+
+.register__subtitle {
+  display: block;
+  font-size: 24px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.register__card {
+  width: 100%;
+  max-width: 360px;
+  margin-top: 24px;
+}
+
+.register__form {
+  margin-top: 16px;
+}

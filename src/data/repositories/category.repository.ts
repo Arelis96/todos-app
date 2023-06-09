@@ -22,7 +22,7 @@ export class CategoryRepository {
     return response.data.data
   }
 
-  create = async ({ token, body }: CreatePayload<Category>) => {
+  create = async ({ token, body }: CreatePayload<Omit<Category, 'userId'>>) => {
     const response = await http.post<RequestResponse<Category>>(
       this.url,
       body,
@@ -31,7 +31,7 @@ export class CategoryRepository {
     return response.data.data
   }
 
-  edit = async ({ token, body, id }: EditPayload<Category>) => {
+  edit = async ({ token, body, id }: EditPayload<Omit<Category, 'userId'>>) => {
     const response = await http.put<RequestResponse<Category>>(
       `${this.url}/${id}`,
       body,

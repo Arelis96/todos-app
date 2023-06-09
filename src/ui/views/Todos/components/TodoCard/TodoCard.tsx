@@ -1,9 +1,10 @@
-import { Button, Card, Tag, Tooltip } from 'antd'
+import { Button, Card, Popconfirm, Tag, Tooltip } from 'antd'
 import {
   CheckOutlined,
   CloseOutlined,
   DeleteOutlined,
   EditOutlined,
+  InfoCircleFilled,
 } from '@ant-design/icons'
 
 import { Todo } from '../../../../../domain/models/todo.model'
@@ -11,44 +12,74 @@ import { Todo } from '../../../../../domain/models/todo.model'
 export type TodoCardProps = {
   data: Todo
   onEdit: (data: Todo) => void
+  onDelete: (data: Todo) => void
+  onCompleted: (data: Todo) => void
+  onUncompleted: (data: Todo) => void
 }
 
-const TodoCard = ({ data, onEdit }: TodoCardProps) => {
+const TodoCard = ({
+  data,
+  onEdit,
+  onDelete,
+  onCompleted,
+  onUncompleted,
+}: TodoCardProps) => {
   const actions = [
     data.isCompleted ? (
-      <Tooltip title='Descompletar'>
+      <Tooltip title='Sin completar' placement='bottom'>
         <Button
           type='text'
           icon={<CloseOutlined className='!text-primary' />}
+          onClick={() => onUncompleted(data)}
         />
       </Tooltip>
     ) : (
-      <Tooltip title='Completar'>
+      <Tooltip title='Completar' placement='bottom'>
         <Button
           type='text'
           icon={<CheckOutlined className='!text-primary' />}
+          onClick={() => onCompleted(data)}
         />
       </Tooltip>
     ),
-    <Tooltip title='Editar'>
+    <Tooltip title='Editar' placement='bottom'>
       <Button
         type='text'
         icon={<EditOutlined className='!text-primary' />}
         onClick={() => onEdit(data)}
       />
     </Tooltip>,
-    <Tooltip title='Delete'>
-      <Button type='text' icon={<DeleteOutlined className='!text-red-500' />} />
-    </Tooltip>,
+
+    <Popconfirm
+      title='Eliminar tarea'
+      description='¿Estás seguro?'
+      onConfirm={() => onDelete(data)}
+      okButtonProps={{ danger: true, className: '!bg-red-500' }}
+      icon={<InfoCircleFilled className='!text-red-500' />}
+    >
+      <Tooltip title='Eliminar' placement='bottom'>
+        <Button
+          type='text'
+          icon={<DeleteOutlined className='!text-red-500' />}
+        />
+      </Tooltip>
+    </Popconfirm>,
   ]
 
   return (
     <Card actions={actions}>
-      <span className='text-base font-medium'>{data.title}</span>
+      <div className='flex justify-between'>
+        <span className='text-base font-medium'>{data.title}</span>
+        {data.isCompleted && (
+          <Tag color='white' className='!bg-green-700'>
+            Completada
+          </Tag>
+        )}
+      </div>
       {data.description && (
-        <p className='text-sm text-gray-500'>{data.description}</p>
+        <p className='text-sm text-gray-500 mt-1'>{data.description}</p>
       )}
-      <div>
+      <div className='mt-2'>
         {data.categories.map((category) => (
           <Tag
             key={category._id}

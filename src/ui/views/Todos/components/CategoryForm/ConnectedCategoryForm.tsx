@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux'
 import { Form, Spin } from 'antd'
 import { useMutation } from '@tanstack/react-query'
 
-import { Todo } from '../../../../../domain/models/todo.model'
-import { TodoFormValues } from './TodoForm.types'
+import { Category } from '../../../../../domain/models/category.model'
+import { CategoryFormValues } from './CategoryForm.types'
 
-import TodoForm from './TodoForm'
+import CategoryForm from './CategoryForm'
 
 import api from '../../../../../data/api'
 import { selectToken } from '../../../../state/session/session.selectors'
@@ -14,24 +14,25 @@ import useMessageService from '../../../../hooks/useMessage'
 
 const { useForm } = Form
 
-type ConnectedTodoFormProps = {
-  item?: Todo
+type ConnectedCategoryFormProps = {
+  item?: Category
   onCompleted?: () => void
 }
 
-const ConnectedTodoForm = ({ item, onCompleted }: ConnectedTodoFormProps) => {
+const ConnectedCategoryForm = ({
+  item,
+  onCompleted,
+}: ConnectedCategoryFormProps) => {
   const messageService = useMessageService()
 
   const token = useSelector(selectToken) as string
 
-  const [form] = useForm<TodoFormValues>()
+  const [form] = useForm<CategoryFormValues>()
 
   useEffect(() => {
     if (item) {
       form.setFieldsValue({
-        title: item.title,
-        description: item.description,
-        categories: item.categories.map((c) => c._id),
+        name: item.name,
       })
     }
 
@@ -41,23 +42,23 @@ const ConnectedTodoForm = ({ item, onCompleted }: ConnectedTodoFormProps) => {
   }, [item, form])
 
   const handleCompleted = () => {
-    messageService.success(item ? 'Tarea editada' : 'Tarea creada')
+    messageService.success(item ? 'Categoria editada' : 'Categoria creada')
     if (onCompleted) {
       onCompleted()
     }
   }
 
   const createMutation = useMutation({
-    mutationFn: api.todo.create,
+    mutationFn: api.category.create,
     onSuccess: handleCompleted,
   })
 
   const editMutation = useMutation({
-    mutationFn: api.todo.edit,
+    mutationFn: api.category.edit,
     onSuccess: handleCompleted,
   })
 
-  const onSubmit = (values: TodoFormValues) => {
+  const onSubmit = (values: CategoryFormValues) => {
     if (item) {
       editMutation.mutate({ token, id: item._id, body: values })
     } else {
@@ -69,7 +70,7 @@ const ConnectedTodoForm = ({ item, onCompleted }: ConnectedTodoFormProps) => {
 
   return (
     <Spin spinning={isLoading}>
-      <TodoForm
+      <CategoryForm
         form={form}
         onSubmit={onSubmit}
         onSubmitError={messageService.showFormError}
@@ -79,4 +80,4 @@ const ConnectedTodoForm = ({ item, onCompleted }: ConnectedTodoFormProps) => {
   )
 }
 
-export default ConnectedTodoForm
+export default ConnectedCategoryForm

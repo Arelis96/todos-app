@@ -1,17 +1,17 @@
 import { Button, Form, Input } from 'antd'
 
-import { LoginFormProps } from './LoginForm.types'
+import { RegisterFormProps } from './RegisterForm.types'
 
 const { Item } = Form
 const { Password } = Input
 
-const LoginForm = ({
+const RegisterForm = ({
   form,
   className,
   onSubmit,
   onSubmitError,
   loading,
-}: LoginFormProps) => {
+}: RegisterFormProps) => {
   return (
     <Form
       form={form}
@@ -20,6 +20,9 @@ const LoginForm = ({
       onFinishFailed={onSubmitError}
       className={className}
     >
+      <Item name='name' label='Nombre' rules={[{ required: true }]}>
+        <Input placeholder='Nombre' />
+      </Item>
       <Item name='email' label='Correo' rules={[{ required: true }]}>
         <Input placeholder='Correo' />
       </Item>
@@ -33,14 +36,14 @@ const LoginForm = ({
         block
         style={{ marginTop: 4 }}
       >
-        Ingresar
+        Registrarme
       </Button>
     </Form>
   )
 }
 
-LoginForm.defaultProps = {
+RegisterForm.defaultProps = {
   className: '',
 }
 
-export default LoginForm
+export default RegisterForm
