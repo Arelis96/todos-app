@@ -140,7 +140,7 @@ const Todos = () => {
             className='my-4 text-center'
             type='warning'
             message='Sin conexión'
-            description='No podras ingresar hasta conectarte a internet'
+            description='Solo podras visualizar los datos'
           />
         )}
       </div>
