@@ -12,3 +12,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <App />
   </React.StrictMode>
 )
+
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.register('/sw.js')
+}
