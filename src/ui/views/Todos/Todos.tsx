@@ -24,6 +24,7 @@ import useVisible from '../../hooks/useVisible'
 import useHandleLogout from '../../hooks/useHandleLogout'
 import useMessageService from '../../hooks/useMessage'
 import { isObjectEmpty } from '../../util/object.util'
+import { getIdList } from '../../util/id.util'
 
 const categoriesQueryKey = ['categories']
 
@@ -52,7 +53,7 @@ const Todos = () => {
 
   useEffect(() => {
     if (categoriesQuery.data) {
-      setSelectedCategories(categoriesQuery.data.map((c) => c._id))
+      setSelectedCategories(getIdList(categoriesQuery.data))
     }
   }, [categoriesQuery.data])
 

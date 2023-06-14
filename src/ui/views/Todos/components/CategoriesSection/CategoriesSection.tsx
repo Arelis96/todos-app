@@ -18,6 +18,7 @@ import api from '../../../../../data/api'
 import { selectToken } from '../../../../state/session/session.selectors'
 import { isObjectEmpty } from '../../../../util/object.util'
 import useMessageService from '../../../../hooks/useMessage'
+import { getIdList } from '../../../../util/id.util'
 
 const categoriesQueryKey = ['categories']
 const todosQueryKey = ['todos']
@@ -57,7 +58,7 @@ const CategoriesSection = () => {
 
   const getCanDeleteCategory = (categoryId: string) => {
     return !todosQuery.data?.some((todo) =>
-      todo.categories.map((c) => c._id).includes(categoryId)
+      getIdList(todo.categories).includes(categoryId)
     )
   }
 
