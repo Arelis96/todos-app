@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { Button, Card, Form } from 'antd'
+import { Alert, Button, Card, Form } from 'antd'
 import { useMutation } from '@tanstack/react-query'
 
 import { Session } from '../../../domain/models/session.model'
@@ -12,6 +12,7 @@ import api from '../../../data/api'
 import { RoutePaths } from '../../navigation/constants'
 import { login } from '../../state/session/session.slice'
 import useMessageService from '../../hooks/useMessage'
+import useIsOnline from '../../hooks/useIsOnline'
 
 import './Register.css'
 
@@ -21,6 +22,8 @@ const Register = () => {
   const messageService = useMessageService()
 
   const [form] = useForm<RegisterFormValues>()
+
+  const isOnline = useIsOnline()
 
   const dispatch = useDispatch()
 
@@ -35,11 +38,23 @@ const Register = () => {
   })
 
   const onSubmitForm = (values: RegisterFormValues) => {
+    if (!isOnline) {
+      messageService.showOfflineWarning()
+      return
+    }
     mutation.mutate({ body: values })
   }
 
   return (
     <div className='view container register'>
+      {!isOnline && (
+        <Alert
+          className='mb-4 text-center'
+          type='warning'
+          message='Sin conexión'
+          description='No podras ingresar hasta conectarte a internet'
+        />
+      )}
       <h1>TodoApp</h1>
       <Card className='register__card'>
         <span className='register__subtitle'>Registro</span>

@@ -7,6 +7,8 @@ import {
 
 import { Todo } from '../../../../../domain/models/todo.model'
 
+import { useOnlineAction } from '../../../../util/online.util'
+
 export type TodoCardProps = {
   data: Todo
   onEdit: (data: Todo) => void
@@ -22,24 +24,29 @@ const TodoCard = ({
   onCompleted,
   onUncompleted,
 }: TodoCardProps) => {
+  const onlineAction = useOnlineAction()
+
   const onChangeCheckbox = () => {
     data.isCompleted ? onUncompleted(data) : onCompleted(data)
   }
 
   const actions = [
     <div className='h-8 flex items-center justify-center'>
-      <Checkbox checked={data.isCompleted} onChange={onChangeCheckbox} />
+      <Checkbox
+        checked={data.isCompleted}
+        onChange={() => onlineAction(onChangeCheckbox)}
+      />
     </div>,
     <Button
       type='text'
       icon={<EditOutlined className='!text-primary' />}
-      onClick={() => onEdit(data)}
+      onClick={() => onlineAction(() => onEdit(data))}
       className='!text-primary'
     />,
     <Popconfirm
       title='Eliminar tarea'
       description='¿Estás seguro?'
-      onConfirm={() => onDelete(data)}
+      onConfirm={() => onlineAction(() => onDelete(data))}
       okButtonProps={{ danger: true, className: '!bg-red-500' }}
       icon={<InfoCircleFilled className='!text-red-500' />}
     >

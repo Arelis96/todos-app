@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { Button, Card, Form } from 'antd'
+import { Alert, Button, Card, Form } from 'antd'
 import { useMutation } from '@tanstack/react-query'
 
 import { Session } from '../../../domain/models/session.model'
@@ -12,6 +12,7 @@ import api from '../../../data/api'
 import { RoutePaths } from '../../navigation/constants'
 import { login } from '../../state/session/session.slice'
 import useMessageService from '../../hooks/useMessage'
+import useIsOnline from '../../hooks/useIsOnline'
 
 import './Login.css'
 
@@ -24,6 +25,8 @@ const Login = () => {
 
   const dispatch = useDispatch()
 
+  const isOnline = useIsOnline()
+
   const onSuccess = (data: Session) => {
     dispatch(login(data))
     messageService.success('Bienvenido')
@@ -35,11 +38,23 @@ const Login = () => {
   })
 
   const onSubmitForm = (values: LoginFormValues) => {
+    if (!isOnline) {
+      messageService.showOfflineWarning()
+      return
+    }
     mutation.mutate({ body: values })
   }
 
   return (
     <div className='view container login'>
+      {!isOnline && (
+        <Alert
+          className='mb-4 text-center'
+          type='warning'
+          message='Sin conexión'
+          description='No podras ingresar hasta conectarte a internet'
+        />
+      )}
       <h1>TodoApp</h1>
       <Card className='login__card'>
         <span className='login__subtitle'>Iniciar sesión</span>

@@ -10,9 +10,11 @@ type QueryProviderProps = {
 const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {
+      networkMode: 'always',
       onError: showRequestErrorMessage,
     },
     queries: {
+      networkMode: 'always',
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       onError: showRequestErrorMessage,

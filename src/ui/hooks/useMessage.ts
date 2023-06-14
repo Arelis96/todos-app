@@ -12,8 +12,13 @@ const useMessageService = () => {
     }
   }
 
+  const showOfflineWarning = () => {
+    message.warning('Necesitas conexión a internet para realizar esta acción')
+  }
+
   return {
     showFormError,
+    showOfflineWarning,
     success: message.success,
     error: message.error,
     warning: message.warning,

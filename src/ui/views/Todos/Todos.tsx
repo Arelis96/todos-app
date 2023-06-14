@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Button, Col, Empty, FloatButton, Row, Spin, Tag, Tooltip } from 'antd'
+import {
+  Alert,
+  Button,
+  Col,
+  Empty,
+  FloatButton,
+  Row,
+  Spin,
+  Tag,
+  Tooltip,
+} from 'antd'
 import {
   EditOutlined,
   LogoutOutlined,
@@ -25,6 +35,8 @@ import useHandleLogout from '../../hooks/useHandleLogout'
 import useMessageService from '../../hooks/useMessage'
 import { isObjectEmpty } from '../../util/object.util'
 import { getIdList } from '../../util/id.util'
+import useIsOnline from '../../hooks/useIsOnline'
+import { useOnlineAction } from '../../util/online.util'
 
 const categoriesQueryKey = ['categories']
 
@@ -34,6 +46,10 @@ const Todos = () => {
   const messageService = useMessageService()
 
   const token = useSelector(selectToken) as string
+
+  const isOnline = useIsOnline()
+
+  const onlineAction = useOnlineAction()
 
   const queryClient = useQueryClient()
 
@@ -118,6 +134,16 @@ const Todos = () => {
   return (
     <div className='view'>
       <Header />
+      <div className='flex justify-center'>
+        {!isOnline && (
+          <Alert
+            className='my-4 text-center'
+            type='warning'
+            message='Sin conexión'
+            description='No podras ingresar hasta conectarte a internet'
+          />
+        )}
+      </div>
       <div className='container py-6'>
         <div className='flex justify-between items-center'>
           <span className='text-2xl font-medium'>Mis tareas</span>
@@ -156,7 +182,7 @@ const Todos = () => {
             <Button
               icon={<EditOutlined />}
               size='small'
-              onClick={categoriesSectionVisible.open}
+              onClick={() => onlineAction(categoriesSectionVisible.open)}
             >
               Categorias
             </Button>
@@ -225,7 +251,7 @@ const Todos = () => {
           <FloatButton
             icon={<PlusOutlined />}
             type='primary'
-            onClick={() => setSelectedTodo({})}
+            onClick={() => onlineAction(() => setSelectedTodo({}))}
           />
         </Tooltip>
       </FloatButton.Group>
