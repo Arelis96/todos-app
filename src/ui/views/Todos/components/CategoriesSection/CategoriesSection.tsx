@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Button, Card, Empty, Popconfirm, Spin, Tooltip } from 'antd'
+import { Button, Card, Empty, Popconfirm, Spin } from 'antd'
 import {
   DeleteOutlined,
   EditOutlined,
@@ -97,13 +97,11 @@ const CategoriesSection = () => {
                 <div className='flex justify-between items-center'>
                   <span className='text-md'>{category.name}</span>
                   <div className='flex gap-1'>
-                    <Tooltip title='Editar' placement='bottom'>
-                      <Button
-                        type='text'
-                        icon={<EditOutlined className='!text-primary' />}
-                        onClick={() => setSelectedCategory(category)}
-                      />
-                    </Tooltip>
+                    <Button
+                      type='text'
+                      icon={<EditOutlined className='!text-primary' />}
+                      onClick={() => setSelectedCategory(category)}
+                    />
                     <Popconfirm
                       title='Eliminar Categoria'
                       description='¿Estás seguro?'
@@ -117,25 +115,16 @@ const CategoriesSection = () => {
                       okButtonProps={{ danger: true, className: '!bg-red-500' }}
                       icon={<InfoCircleFilled className='!text-red-500' />}
                     >
-                      <Tooltip
-                        title={
-                          canDelete
-                            ? 'Eliminar'
-                            : 'No se pueden eliminar categorias que se estén utilizando'
+                      <Button
+                        type='text'
+                        icon={
+                          <DeleteOutlined
+                            className={canDelete ? '!text-red-500' : ''}
+                          />
                         }
-                        placement='bottom'
-                      >
-                        <Button
-                          type='text'
-                          icon={
-                            <DeleteOutlined
-                              className={canDelete ? '!text-red-500' : ''}
-                            />
-                          }
-                          danger
-                          disabled={!canDelete}
-                        />
-                      </Tooltip>
+                        danger
+                        disabled={!canDelete}
+                      />
                     </Popconfirm>
                   </div>
                 </div>

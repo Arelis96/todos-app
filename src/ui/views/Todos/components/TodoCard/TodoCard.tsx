@@ -1,7 +1,5 @@
-import { Button, Card, Popconfirm, Tag, Tooltip } from 'antd'
+import { Button, Card, Checkbox, Popconfirm, Tag } from 'antd'
 import {
-  CheckOutlined,
-  CloseOutlined,
   DeleteOutlined,
   EditOutlined,
   InfoCircleFilled,
@@ -24,32 +22,20 @@ const TodoCard = ({
   onCompleted,
   onUncompleted,
 }: TodoCardProps) => {
-  const actions = [
-    data.isCompleted ? (
-      <Tooltip title='Sin completar' placement='bottom'>
-        <Button
-          type='text'
-          icon={<CloseOutlined className='!text-primary' />}
-          onClick={() => onUncompleted(data)}
-        />
-      </Tooltip>
-    ) : (
-      <Tooltip title='Completar' placement='bottom'>
-        <Button
-          type='text'
-          icon={<CheckOutlined className='!text-primary' />}
-          onClick={() => onCompleted(data)}
-        />
-      </Tooltip>
-    ),
-    <Tooltip title='Editar' placement='bottom'>
-      <Button
-        type='text'
-        icon={<EditOutlined className='!text-primary' />}
-        onClick={() => onEdit(data)}
-      />
-    </Tooltip>,
+  const onChangeCheckbox = () => {
+    data.isCompleted ? onUncompleted(data) : onCompleted(data)
+  }
 
+  const actions = [
+    <div className='h-8 flex items-center justify-center'>
+      <Checkbox checked={data.isCompleted} onChange={onChangeCheckbox} />
+    </div>,
+    <Button
+      type='text'
+      icon={<EditOutlined className='!text-primary' />}
+      onClick={() => onEdit(data)}
+      className='!text-primary'
+    />,
     <Popconfirm
       title='Eliminar tarea'
       description='¿Estás seguro?'
@@ -57,12 +43,11 @@ const TodoCard = ({
       okButtonProps={{ danger: true, className: '!bg-red-500' }}
       icon={<InfoCircleFilled className='!text-red-500' />}
     >
-      <Tooltip title='Eliminar' placement='bottom'>
-        <Button
-          type='text'
-          icon={<DeleteOutlined className='!text-red-500' />}
-        />
-      </Tooltip>
+      <Button
+        type='text'
+        icon={<DeleteOutlined className='!text-red-500' />}
+        className='!text-red-500'
+      />
     </Popconfirm>,
   ]
 

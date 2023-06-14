@@ -153,13 +153,13 @@ const Todos = () => {
                 </Tag>
               )
             })}
-            <Tooltip title='Editar categorias'>
-              <Button
-                icon={<EditOutlined />}
-                size='small'
-                onClick={categoriesSectionVisible.open}
-              />
-            </Tooltip>
+            <Button
+              icon={<EditOutlined />}
+              size='small'
+              onClick={categoriesSectionVisible.open}
+            >
+              Categorias
+            </Button>
           </div>
           <Spin spinning={isLoading}>
             <Row gutter={16} className='mt-6 gap-y-3'>
