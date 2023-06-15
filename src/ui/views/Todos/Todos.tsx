@@ -20,6 +20,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { Todo } from '../../../domain/models/todo.model'
+import { Category } from '../../../domain/models/category.model'
 
 import Header from '../../components/Header/Header'
 import TodoCard from './components/TodoCard/TodoCard'
@@ -123,6 +124,29 @@ const Todos = () => {
     },
   })
 
+  const isAllSelectedCategories =
+    selectedCategories.length === categoriesQuery.data?.length
+
+  const onClickCategoryTag = (category: Category) => {
+    const isSelected = selectedCategories.includes(category._id)
+    if (isAllSelectedCategories) {
+      setSelectedCategories([category._id])
+      return
+    }
+    if (isSelected) {
+      removeSelectedCategory(category._id)
+      return
+    }
+    addSelectedCategory(category._id)
+  }
+
+  const onClickAllCategoriesTag = () => {
+    if (isAllSelectedCategories) return
+    if (categoriesQuery.data) {
+      setSelectedCategories(getIdList(categoriesQuery.data))
+    }
+  }
+
   const isLoading =
     todosQuery.isLoading ||
     todosQuery.isFetching ||
@@ -157,7 +181,6 @@ const Todos = () => {
           <div>
             {categoriesQuery.data?.map((category) => {
               const isSelected = selectedCategories.includes(category._id)
-
               return (
                 <Tag
                   key={category._id}
@@ -167,18 +190,23 @@ const Todos = () => {
                       ? '!bg-primary !h-6'
                       : '!bg-gray-200 !text-gray-600 !h-6'
                   } hover:cursor-pointer`}
-                  onClick={() => {
-                    if (isSelected) {
-                      removeSelectedCategory(category._id)
-                    } else {
-                      addSelectedCategory(category._id)
-                    }
-                  }}
+                  onClick={() => onClickCategoryTag(category)}
                 >
                   {category.name}
                 </Tag>
               )
             })}
+            <Tag
+              color='white'
+              className={`${
+                isAllSelectedCategories
+                  ? '!bg-primary !h-6'
+                  : '!bg-gray-200 !text-gray-600 !h-6'
+              } hover:cursor-pointer`}
+              onClick={onClickAllCategoriesTag}
+            >
+              Todas
+            </Tag>
             <Button
               icon={<EditOutlined />}
               size='small'
@@ -191,6 +219,11 @@ const Todos = () => {
             <Row gutter={16} className='mt-6 gap-y-3'>
               {todosQuery.data
                 ?.sort((todo) => (todo.isCompleted ? 1 : -1))
+                .filter((todo) =>
+                  todo.categories.some((c) =>
+                    selectedCategories.includes(c._id)
+                  )
+                )
                 .map((todo) => {
                   return (
                     <Col key={todo._id} span={24} md={12}>
